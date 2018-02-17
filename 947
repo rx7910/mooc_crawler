@@ -1,0 +1,901 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>
+ajax跨域完全讲解_课程评论_慕课网
+</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="renderer" content="webkit" />
+
+<meta property="qc:admins" content="77103107776157736375" />
+<meta property="wb:webmaster" content="c4f857219bfae3cb" />
+<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+<meta http-equiv="Cache-Control" content="no-transform " />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="dns-prefetch" href="//www.imooc.com" />
+<link rel="dns-prefetch" href="//img.imooc.com" />
+<link rel="dns-prefetch" href="//img.mukewang.com" />
+<link rel="apple-touch-icon" sizes="76x76" href="/static/img/common/touch-icon-ipad.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/static/img/common/touch-icon-iphone-retina.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/static/img/common/touch-icon-ipad-retina.png">
+
+<meta name="Keywords" content="" />
+
+
+<meta name="Description" content="通过讲解什么是跨域问题，从系统最常见的部署结构上分析跨域解决的思路，详细讲解jsonp的工作机制，http协议如何支持跨域，以及http服务器nginx和apache的2种不同解决思路，让大家知其然并知其所以然，快速掌握问题本质和分析问题的方法"/>
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/static/moco/v1.0/dist/css/moco.min.css?t=201802211214" type="text/css" />
+
+<script type="text/javascript">
+
+eval(function(p,a,c,k,e,d){e=function(c){return(c<a?"":e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1;};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p;}('!4(){3 a={};3 c=0;3 5=[{d:\'//o.q.g/o/p/K/J.r\',6:0},{d:\'//p.q.g/I/L-O.r\',6:0}];3 w=4(){3 j,s=e N("(^| )"+"k=([^;]*)(;|$)");8(j=u.l.M(s)){m H(j[2])}E{m z}};3 y=4(t){3 n=w();3 b=e F();b.G(b.D()+13*v*v*10);u.l="k="+t+";14="+b.R()+";S=/;P=Q.g";8(t&&t!=n){X.U.V()}};3 C=4(i){3 7=e W();7.T=4(){12(a[i]);a[i]=z;9(i,0)};7.Z=4(){9(i,1)};a[i]=11(4(){7.B="";9(i,1)},Y);7.B=5[i].d};3 9=4(x,6){c++;5[x].6=6;8(c==5.f){3 h=0;A(3 i=0;i<5.f;i++){8(5[i].6==1){h=1}}y(h)}};A(3 i=0;i<5.f;i++){C(i)}}()',62,67,'|||var|function|urls|flag|imgobj|if|callback|timer|exp|count|url|new|length|com|error||arr|IMCDNS|cookie|return|_0|static|img|mukewang|png|reg||document|60|getcookie|index|setcookie|null|for|src|checkCdn|getTime|else|Date|setTime|unescape|images|logo|common|unknow|match|RegExp|80|domain|imooc|toGMTString|path|onload|location|reload|Image|window|3000|onerror|1000|setTimeout|clearTimeout|24|expires'.split('|'),0,{}))
+
+</script>
+
+
+<script type="text/javascript">
+
+var OP_CONFIG={"module":"course","page":"comment","userout":0,"usercaution":null};
+var isLogin = 0;
+var is_choice = "";
+var seajsTimestamp="v=201802211214";
+var _msg_unread = 0; 
+var _not_unread = 0; 
+var _cart_num = 0;
+</script>
+
+
+
+
+
+
+
+
+<link href="//moco.imooc.com/captcha/style/captcha.min.css" rel="stylesheet">
+<script>
+/*学习页通用配置*/
+var GC = {
+  course: {
+    id: 947,
+    name: 'ajax跨域完全讲解',
+    pic: '',
+    video_url: ''
+  },
+  classmates: 20 // 你的同学一页显示数量
+};
+
+
+</script>
+<script>
+
+var hasLearn;
+    hasLearn = 0;
+
+</script>
+
+
+
+<link rel="stylesheet" href="//static.mukewang.com/static/css/??base.css,common/common-less.css?t=2.5,course/common-less.css,course/view-less.css,course/learn-less.css,u/dynamic/home-less.css,course/comment-less.css?v=201802211214" type="text/css" />
+</head>
+<body >
+
+<div id="header">
+    <div class="page-container" id="nav"  >
+         <div id="logo" class="logo"><a href="/" target="_self" class="hide-text" title="首页">慕课网</a></div>
+      
+
+        <button type="button" class="navbar-toggle visible-xs-block js-show-menu" >
+            <i class="icon-menu"></i>
+        </button>
+        <ul class="nav-item">
+                        <li class="set-btn visible-xs-block"><a href="/user/newlogin" target="_self">登录</a> / <a href="/user/newsignup" target="_self">注册</a></li>
+                        
+            <li>
+                <a href="/course/list"  target="_self">免费课程</a>
+            </li>           
+            <li><a href="//class.imooc.com" class="program-nav " target="_self">职业路径<i class="icn-new"></i></a></li>
+            <li>
+                <a href="//coding.imooc.com" target="_self">实战</a>
+            </li>
+            <li><a href="/wenda"  target="_self">猿问</a></li>
+            <li><a href="/discovery"  target="_self">发现</a></li>
+            
+        </ul>
+                <div id="login-area">
+            <ul class="header-unlogin clearfix">
+                <li class="app-load" id="js-app-load">
+                    <a href="//www.imooc.com/mobile/app" target="_blank" style="width:60px;">下载APP</a>
+                    <div class="app-load-box clearfix js-load-box">
+                        <img src="/static/img/common/appload.png" class="l">
+                        <div class="r">
+                            <p>扫描下载慕课网APP</p>
+                            <a href="https://itunes.apple.com/cn/app/mu-ke-wang/id722179140?mt=8" target="_blank"><i class="icon-apple"></i>App Store下载</a>
+                            <a href="//www.imooc.com/mobile/mukewang.apk" target="_blank"><i class="icon-android"></i>Android下载</a>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="shop-cart" id="shop-cart">
+                    <a href="//order.imooc.com/pay/cart" class="shop-cart-icon" target="_blank">
+                        <span class="icon-shopping-cart js-endcart"></span><span>购物车</span><span class="shopping_icon js-cart-num" data-ordernum="0"  data-cartnum="0" style='display: none'>0</span>
+                    </a>
+                    <div class="my-cart" id="js-my-cart"></div>
+                </li>             
+                <li class="header-signin">
+                    <a href="#" id="js-signin-btn">登录</a> / <a href="#" id="js-signup-btn">注册</a>
+                </li>             
+            </ul>
+        </div>
+                <div class='search-warp clearfix' style='min-width: 32px; height: 72px;'>
+                            <div class="pa searchTags" >
+                                    <a href="//class.imooc.com/sc/20" target="_blank">前端入门</a>
+                                    <a href="//class.imooc.com/sc/18" target="_blank">Java小白入门</a>
+                                </div>
+            
+            <div class="search-area" data-search="top-banner">
+                <input class="search-input" data-suggest-trigger="suggest-trigger"      type="text" autocomplete="off">
+                <input type='hidden' class='btn_search' data-search-btn="search-btn" />
+                <ul class="search-area-result" data-suggest-result="suggest-result">
+                </ul>
+            </div>
+            <div class='showhide-search' data-show='no'><i class='icon-search'></i></div>
+        </div>
+    </div>
+</div>
+
+<div class="bindHintBox js-bindHintBox hide">
+    <div class="pr">
+        为了账号安全，请及时绑定邮箱和手机<a href="/user/setbindsns" class="ml20 color-red" target="_blank">立即绑定</a>
+        <button  class="closeBindHint js-closeBindHint" type="button"></button>
+        <div class="arrow"> </div>
+    </div>
+</div>
+
+
+<div id="main">
+
+
+<div class="course-infos">
+    <div class="w pr">
+        <div class="path">  
+            <a href="/course/list">课程</a>
+                        <i class="path-split">\</i><a href="/course/list?c=be">后端开发</a>
+                                    <i class="path-split">\</i><a href="/course/list?c=java">Java</a>
+                        <i class="path-split">\</i><a href="/learn/947"><span>ajax跨域完全讲解</a></span>
+        </div>
+        <div class="hd clearfix">
+            <h2 class="l">ajax跨域完全讲解</h2>
+                    </div>
+
+        <div class="statics clearfix">
+            
+                        <div class="moco-btn l learn-btn moco-btn-red"> 
+                <a href="/video/16571" class="J-learn-course">开始学习</a>
+                <em></em>
+                <i class="follow-action js-follow-action"></i>
+            </div>
+                        
+            
+                        
+            <div class="static-item l">
+                <span class="meta">学习人数</span>
+                <span class="meta-value js-learn-num"></span>
+                            </div>
+            <div class="static-item l">
+                <span class="meta">难度级别</span>
+                <span class="meta-value">中级</span>
+                <em></em>
+            </div>
+            <div class="static-item l">
+                <span class="meta">课程时长</span>
+                <span class="meta-value"> 1小时40分</span>
+                <em></em>
+            </div>
+            <div class="static-item l score-btn">
+                <span class="meta">综合评分</span>
+                <span class="meta-value">10.0</span>
+                <em></em>
+                
+                                
+                <div class="score-wrap icon-drop_up triangle">
+                    <div class="score-box">
+                        <a href="/coursescore/947" class="person-num">
+                            <span class="person-num l">1人评价</span>
+                        </a>
+                                                    <a href="/coursescore/947?page=1" class="evaluation-btn r">查看评价</a>
+                                                <div class="score-detail-box">
+                            <div class="score-static-item">
+                                <span class="meta-value">10.0</span>
+                                <span class="meta">内容实用</span>
+                            </div>
+                            <div class="score-static-item">
+                                <span class="meta-value">10.0</span>
+                                <span class="meta">简洁易懂</span>
+                                <em></em>
+                            </div>
+                            <div class="score-static-item">
+                                <span class="meta-value">10.0</span>
+                                <span class="meta">逻辑清晰</span>
+                                <em></em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="extra">
+            <!-- credit -->
+            
+            <!-- share -->
+            <div class="share-action r bdsharebuttonbox">
+                <a href="javascript:;" class="share wx js-share icon-share-weichat" data-cmd="weixin"></a>
+                <a href="javascript:;" class="share qq js-share icon-share-qq" data-cmd="qzone"></a>
+                <a href="javascript:;" class="share sina js-share icon-share-weibo" data-cmd="tsina"></a>
+            </div>
+        </div>
+    </div>
+    <div class="info-bg" id="js-info-bg">
+        <div class="cover-img-wrap">
+        <img data-src="//img4.mukewang.com/5a7d64da0001d0ef06000338.jpg" alt="" style="display: none" id="js-cover-img">
+        </div>
+        <div class="cover-mask"></div>
+    </div>
+    
+        
+</div>
+
+<div class="course-info-main clearfix w">
+    <div class="content-wrap clearfix">
+        <div class="content">
+            <!-- 课程简介 -->
+            <div class="course-brief">
+                <p class="auto-wrap">简介：通过讲解什么是跨域问题，从系统最常见的部署结构上分析跨域解决的思路，详细讲解jsonp的工作机制，http协议如何支持跨域，以及http服务器nginx和apache的2种不同解决思路，让大家知其然并知其所以然，快速掌握问题本质和分析问题的方法</p>
+            </div>
+            <!-- 课程简介 end -->
+            <div class="mod-tab-menu ">
+	<ul class="course-menu clearfix">
+		<li><a class="ui-tabs-active " id="learnOn"  href="/learn/947"><span>章节</span></a></li>
+		<li><a id="commentOn" class="active" href="/comment/947"><span>评论</span></a></li>
+		<li><a id="qaOn" class="" href="/qa/947/t/1?page=1"><span>问答</span></a></li>
+		<li><a id="noteOn" class="" href="/note/947?sort=last&page=1"><span>笔记</span></a></li>
+	    <!--
+        <li><a id="wikiOn" class="" href="/wiki/947">WIKI</a></li>
+        -->
+	</ul>
+	
+</div><!-- 课程面板 -->
+
+            
+<!--发布评论-->
+<div id="course_note">
+        <ul class="mod-post" id="comment-list">
+                <li class="post-row" id="542276">
+            <div class="media">
+                <a href="/u/1153391/courses" target="_blank"><img src="//img3.mukewang.com/59f56f2e0001e85702560256-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/1153391/courses" target="_blank">coderew</a>
+                </div>
+                <p class="cnt">正月初二来学一个</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：13小时前</span>
+                                        <a href="/video/16571" class="from">源自：1-1 什么是跨越问题</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542276">
+                            <span class="icon-thumb-revert"></span>
+                            <em>3</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542285">
+            <div class="media">
+                <a href="/u/3241207/courses" target="_blank"><img src="//img3.mukewang.com/533e4fc800012f3002000200-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/3241207/courses" target="_blank">篮球小子</a>
+                </div>
+                <p class="cnt">感谢老师细致精彩的讲解！一口气听完全部课程，非常棒！</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：11小时前</span>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542285">
+                            <span class="icon-thumb-revert"></span>
+                            <em>1</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542217">
+            <div class="media">
+                <a href="/u/2674286/courses" target="_blank"><img src="//img2.mukewang.com/5a86a65a00016ca703200320-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/2674286/courses" target="_blank">晓风轻</a>
+                </div>
+                <p class="cnt">谢谢大家支持。觉得好的请加关注。留言。</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：1天前</span>
+                                        <a href="/video/16596" class="from">源自：6-1 课程总结</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542217">
+                            <span class="icon-thumb-revert"></span>
+                            <em>1</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542358">
+            <div class="media">
+                <a href="/u/5153487/courses" target="_blank"><img src="//img1.mukewang.com/58e65a5c000145b101800180-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/5153487/courses" target="_blank">一沏白开</a>
+                </div>
+                <p class="cnt">讲的非常好，条理很清晰，谢谢作者分享。</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：7分钟前</span>
+                                        <a href="/video/16596" class="from">源自：6-1 课程总结</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542358">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542347">
+            <div class="media">
+                <a href="/u/6397333/courses" target="_blank"><img src="//img.mukewang.com/5333a207000118af02200220-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/6397333/courses" target="_blank">shadow0721</a>
+                </div>
+                <p class="cnt">学习从不止步</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：1小时前</span>
+                                        <a href="/video/16571" class="from">源自：1-1 什么是跨越问题</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542347">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542341">
+            <div class="media">
+                <a href="/u/1390236/courses" target="_blank"><img src="//img2.mukewang.com/5458473800010c9d02200220-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/1390236/courses" target="_blank">IT骚年</a>
+                </div>
+                <p class="cnt">maven打包的时候缺少依赖包</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2小时前</span>
+                                        <a href="/video/16572" class="from">源自：2-1 编写后台服务代码</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542341">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542322">
+            <div class="media">
+                <a href="/u/3872563/courses" target="_blank"><img src="//img4.mukewang.com/5333a21e0001eb4102000200-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/3872563/courses" target="_blank">RocX</a>
+                </div>
+                <p class="cnt">大年初二在网吧里学一个</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：4小时前</span>
+                                        <a href="/video/16571" class="from">源自：1-1 什么是跨越问题</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542322">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542239">
+            <div class="media">
+                <a href="/u/5666289/courses" target="_blank"><img src="//img4.mukewang.com/545868330001e54e02200220-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/5666289/courses" target="_blank">慕侠8045584</a>
+                </div>
+                <p class="cnt">讲的很棒，期待下一波课程～～～</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：1天前</span>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542239">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542212">
+            <div class="media">
+                <a href="/u/2148262/courses" target="_blank"><img src="//img1.mukewang.com/55a53007000196bd01000100-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/2148262/courses" target="_blank">qq_前进_5</a>
+                </div>
+                <p class="cnt">大年初一来学习下</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：1天前</span>
+                                        <a href="/video/16571" class="from">源自：1-1 什么是跨越问题</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542212">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542192">
+            <div class="media">
+                <a href="/u/3543028/courses" target="_blank"><img src="//img1.mukewang.com/5458633f0001c2a902200220-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/3543028/courses" target="_blank">慕粉3543028</a>
+                </div>
+                <p class="cnt">讲的十分的棒，为老师疯狂打call</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：1天前</span>
+                                        <a href="/video/16596" class="from">源自：6-1 课程总结</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542192">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542175">
+            <div class="media">
+                <a href="/u/2226768/courses" target="_blank"><img src="//img4.mukewang.com/545862c40001eebf02200220-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/2226768/courses" target="_blank">wu_xjian</a>
+                </div>
+                <p class="cnt">很清楚，点赞！！！</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：1天前</span>
+                                        <a href="/video/16596" class="from">源自：6-1 课程总结</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542175">
+                            <span class="icon-thumb-revert"></span>
+                            <em>1</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542171">
+            <div class="media">
+                <a href="/u/443580/courses" target="_blank"><img src="//img.mukewang.com/543e371f0001767204600460-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/443580/courses" target="_blank">ewang1986</a>
+                </div>
+                <p class="cnt">大年初一来学习个</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2天前</span>
+                                        <a href="/video/16571" class="from">源自：1-1 什么是跨越问题</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542171">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542151">
+            <div class="media">
+                <a href="/u/6168672/courses" target="_blank"><img src="//img1.mukewang.com/54584cb50001e5b302200220-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/6168672/courses" target="_blank">慕婉清822232</a>
+                </div>
+                <p class="cnt">给好评，讲的很全面。</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2天前</span>
+                                        <a href="/video/16596" class="from">源自：6-1 课程总结</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542151">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542148">
+            <div class="media">
+                <a href="/u/6065378/courses" target="_blank"><img src="//img2.mukewang.com/59f34b8100011c4901800180-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/6065378/courses" target="_blank">一枫红叶QIU</a>
+                </div>
+                <p class="cnt">老师讲的挺好的</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2天前</span>
+                                        <a href="/video/16580" class="from">源自：5-4 json解决跨域</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542148">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542147">
+            <div class="media">
+                <a href="/u/6065378/courses" target="_blank"><img src="//img1.mukewang.com/59f34b8100011c4901800180-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/6065378/courses" target="_blank">一枫红叶QIU</a>
+                </div>
+                <p class="cnt">这块听糊涂了，再听一遍</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2天前</span>
+                                        <a href="/video/16580" class="from">源自：5-4 json解决跨域</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542147">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542144">
+            <div class="media">
+                <a href="/u/142901/courses" target="_blank"><img src="//img4.mukewang.com/533e52b90001456f02000200-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/142901/courses" target="_blank">手机用户曾小乱</a>
+                </div>
+                <p class="cnt">老师好厉害啊</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2天前</span>
+                                        <a href="/video/16592" class="from">源自：5-16 被调用方解决跨域 - apache解决方案_x264</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542144">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542132">
+            <div class="media">
+                <a href="/u/3555574/courses" target="_blank"><img src="//img2.mukewang.com/58caabae0001d6ac03930393-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/3555574/courses" target="_blank">平__凡</a>
+                </div>
+                <p class="cnt">大年三十来学习个</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2天前</span>
+                                        <a href="/video/16571" class="from">源自：1-1 什么是跨越问题</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542132">
+                            <span class="icon-thumb-revert"></span>
+                            <em>1</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+              <li class="post-row" id="542128">
+            <div class="media">
+                <a href="/u/5312557/courses" target="_blank"><img src="//img1.mukewang.com/5917b4350001b89401000100-40-40.jpg" width="40" height="40"></a>
+            </div>
+            <div class="bd">
+                <div class="tit">
+                    <a href="/u/5312557/courses" target="_blank">qq_ve星涳灬_0</a>
+                </div>
+                <p class="cnt">知乎上看到开了课程~~特来支持一下</p>
+                <div class="footer clearfix">
+                    <span title="创建时间" class="l timeago">时间：2天前</span>
+                                        <a href="/video/16571" class="from">源自：1-1 什么是跨越问题</a>
+                                        <div class="actions r">
+                                                <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="542128">
+                            <span class="icon-thumb-revert"></span>
+                            <em>0</em>
+                        </a>
+                    </div>
+                </div>
+            </div>
+      </li>
+          </ul>
+    <div class="page"><span class="disabled_page">首页</span><span class="disabled_page">上一页</span><a href="javascript:void(0)" class="active text-page-tag">1</a><a class="text-page-tag" href="/course/comment/id/947?page=2">2</a><a href="/course/comment/id/947?page=2">下一页</a><a href="/course/comment/id/947?page=2">尾页</a></div>
+    </div>
+<div class="tipoff-block js-tipoff-block"></div>
+<div class="tipoff-box js-tipoff-box">
+	<div class="tipoff-top-box clearfix">
+		<p class="l tipoff-title">举报</p>
+		<span class="r tipoff-close-btn icon-close2 js-tipoff-close"></span>
+	</div>
+	<div class="tipoff-type-box js-tipoff-typebox clearfix">
+		<div class="tipoff-loading">
+		  	<div class="bounce1"></div>
+			<div class="bounce2"></div>
+			<div class="bounce3"></div>
+		</div>
+	</div>
+	<div class="tipoff-content">
+		<textarea name="tipoff-content" class="tipoff-desc js-tipoff-desc" placeholder="写下举报理由"></textarea>
+		<div class="tipoff-text"><span class="js-tipoff-text">0</span>/150</div>
+	</div>
+	<div class="tipoff-btn-box clearfix">
+		<div class="r tipoff-submit-btn js-tipoff-submit" data-tipofftype="">提交</div>
+		<div class="r tipoff-cancel-btn js-tipoff-close">取消</div>
+	</div>
+</div>
+
+
+
+
+
+        </div>
+        <div class="aside r">
+            <div class="bd">
+    
+        
+        <div class="box mb40 js-usercard-box">
+        <h4>讲师提示</h4>
+                        <div class="teacher-info">
+            <a href="/u/2674286/courses?sort=publish" target="_blank" >
+                <img data-userid="2674286" class="js-usercard-dialog" src="//img2.mukewang.com/5a86a65a00016ca703200320-80-80.jpg" width="80" height="80">
+            </a>
+            <span class="tit">
+                <a href="/u/2674286/courses?sort=publish" target="_blank">晓风轻</a><i class="icon-imooc"></i>
+            </span>
+            <span class="job">JAVA开发工程师</span>
+        </div>
+                                <div class="course-info-tip">
+                        <dl class="first">
+                <dt>课程须知</dt>
+                <dd class="autowrap">需要具备基本的前后台开发技术</dd>
+            </dl>
+                                    <dl>
+                <dt>老师告诉你能学到什么？</dt>
+                <dd class="autowrap">AJAX跨域产生的原因和解决思路			
+系统的基本部署架构和跨域的关系			
+http服务器nginx和apache的重要作用和跨域的2种解决思路			
+jsonp的工作机制和优缺点			
+前台测试框架Jasmine的使用			
+</dd>
+            </dl>
+                    </div>
+            </div>
+    
+    <div class="js-recom-box">
+</div>
+
+</div>        </div>
+    </div>
+    <div class="clear"></div>
+
+</div>
+
+<div class="maybe-wenda" id="maybe-wenda" style="display: none;">
+    <i class="icon-chat"></i>
+    <p class="text">你发的评论可能会是问题？<br/>是否将他发到问答中</p>
+    <input class="btn ok" type="button" value="好的" id="wenda-ok">
+    <input class="btn no" type="button" value="不用" id="wenda-no">
+</div>
+
+</div>
+
+<div id="footer" >
+    <div class="waper">
+        <div class="footerwaper clearfix">
+            <div class="followus r">
+                <a class="followus-weixin" href="javascript:;"  target="_blank" title="微信">
+                    <div class="flw-weixin-box"></div>
+                </a>
+                <a class="followus-weibo" href="http://weibo.com/u/3306361973"  target="_blank" title="新浪微博"></a>
+                <a class="followus-qzone" href="http://user.qzone.qq.com/1059809142/" target="_blank" title="QQ空间"></a>
+            </div>
+            <div class="footer_intro l">
+                <div class="footer_link">
+                    <ul>
+                        <li><a href="//www.imooc.com/" target="_blank">网站首页</a></li>
+                        <li><a href="/about/cooperate" target="_blank" title="企业合作">企业合作</a></li>
+                        <li><a href="/about/job" target="_blank">人才招聘</a></li>
+                        <li> <a href="/about/contact" target="_blank">联系我们</a></li>
+                        <li> <a href="/about/recruit" target="_blank">讲师招募</a></li>
+                        <li> <a href="/about/faq" target="_blank">常见问题</a></li>
+                        <li> <a href="/user/feedback" target="_blank">意见反馈</a></li>
+                        <li><a href="http://daxue.imooc.com/" target="_blank">慕课大学</a></li>
+                        <li> <a href="/about/friendly" target="_blank">友情链接</a></li>
+                       <!--  <li><a href="/corp/index" target="_blank">合作专区</a></li>
+                        <li><a href="/about/us" target="_blank">关于我们</a></li> -->
+                    </ul>
+                </div>
+                <p>Copyright © 2018 imooc.com All Rights Reserved | 京ICP备 13046642号-2</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="J_GotoTop" class="elevator">
+
+    <a href="/user/feedback" class="elevator-msg" target="_blank">
+        <i class="icon-feedback"></i>
+        <span class="">意见反馈</span>
+    </a>
+    <a href="/about/faq" class="elevator-faq" target="_blank">
+        <i class="icon-ques"></i>
+        <span class="">常见问题</span>
+    </a>
+    <a href="//www.imooc.com/mobile/app" target="_blank" class="elevator-app" >
+        <i class="icon-appdownload"></i>
+        <span class="">APP下载</span>
+        <div class="elevator-app-box"></div>
+    </a>
+    <a href="javascript:void(0)" class="elevator-weixin no-goto" id="js-elevator-weixin" >
+        <i class="icon-wxgzh"></i>
+        <span class="">官方微信</span>
+        <div class="elevator-weixin-box"></div>
+    </a>
+    <a href="javascript:void(0)" class="elevator-top no-goto" style="display:none" id="backTop">
+        <i class="icon-up2"></i>
+        <span class="">返回顶部</span>
+    </a>
+</div>
+
+
+
+<script type="text/javascript" charset="utf-8" src="/static/lib/ueditor1.4.3.1/ueditor.final.min.js"></script>
+
+<!--script-->
+<script type="text/javascript" src="//moco.imooc.com/static/monitor/error.js"></script>
+<script src="/passport/static/scripts/ssologin.js?v=2.0"></script>
+<script type="text/javascript" src="/static/sea-modules/seajs/seajs/2.1.1/sea.js"></script>
+<script type="text/javascript" src="/static/sea_config.js?v="></script>
+<script type="text/javascript">seajs.use("/static/page/"+OP_CONFIG.module+"/"+OP_CONFIG.page);</script>
+
+ 
+<script src="//moco.imooc.com/captcha/script/captcha.min.js?v=1.0"></script>
+<script type="text/javascript">
+  (function(){
+    var imgPic = GC.course.pic || 'https://www.imooc.com/static/img/index/logo_new.png',
+        text = '我正在参加@慕课网  的一门课程【' + GC.course.name + '】，很不错哦！快来一起学习吧！', //节名称
+        url = 'https://www.imooc.com' + window.location.pathname;
+
+    window._bd_share_config = {
+        "common": {
+            "bdUrl": url,
+            "bdSnsKey": {
+              'tsina':'2254855082'
+            },
+            "bdText": text,
+            "bdMini": "2",
+            "bdMiniList": false,
+            "bdPic": imgPic,
+            "bdStyle": "0",
+            "bdSize": "16"
+        },
+        "share": {}
+    };
+    setTimeout(function(){
+            with(document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = '/static/lib/baiduShare/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+        },1000)
+
+  })();
+</script>
+<div class="mask"></div>
+
+
+<script type="text/imooc-tpl" id="tpl_pl">
+    <li class="post-row">
+        <div class="media">
+            <a href="/u/{uid}/courses" target="_blank">
+                <img src="{upic}" width="40" height="40">
+            </a>
+        </div>
+        <div class="bd">
+            <div class="tit">
+                <a href="/u/{uid}/courses" target="_blank">{nickname}</a>
+            </div>
+            <p class="cnt">{txt}</p>
+            <div class="footer clearfix">
+                <span title="创建时间" class="l timeago">时间：{time}</span>
+                <div class="actions r">
+                    <a title="赞" href="javascript:;" class="js-pl-praise list-praise post-action"  data-id="{id}">
+                        <span class="icon-thumb-revert"></span>
+                        <em>0</em>
+                    </a>
+                </div>
+            </div>
+      </div>
+    </li>
+
+</script>
+
+
+
+
+<div style="display: none">
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f0cfcccd7b1393990c78efdeebff3968";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+(function (d) {
+window.bd_cpro_rtid="rHT4P1c";
+var s = d.createElement("script");s.type = "text/javascript";s.async = true;s.src = location.protocol + "//cpro.baidu.com/cpro/ui/rt.js";
+var s0 = d.getElementsByTagName("script")[0];s0.parentNode.insertBefore(s, s0);
+})(document);
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+</div>
+</body>
+</html>
