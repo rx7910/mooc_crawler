@@ -23,27 +23,30 @@ class IMoocSpider(scrapy.Spider):
             reg = r"/learn/(.*)"
             course_id = re.findall(reg, href_string)[0]
 
+            print('%%%%%%%%%%%%%%%%%%%', course_id)
+
             self.course_id = course_id
             self.course_name = course_card.xpath("//div[@class='course-card-content']/h3/text()").extract_first()
 
             if course_id is not None:
                 comment_url = 'https://www.imooc.com/comment/' + course_id
+                print('***************************************')
                 yield scrapy.Request(url=comment_url, callback=self.parse_comment_page)
 
         next_page = response.xpath("//div[@class='page']/a[contains(., '下一页')]/@href").extract_first()
 
-        if next_page is not None:
-            next_page = response.urljoin(next_page)
-            yield response.follow(next_page, callback=self.parse)
+        # if next_page is not None:
+        #     next_page = response.urljoin(next_page)
+        #     yield response.follow(next_page, callback=self.parse)
 
     def parse_comment_page(self, response):
-        # print('***********bg**********', response.xpath("//div[@class='bg']"))
-        for comment in response.xpath("//div[@class='bd']"):
-            print('comment --------', comment)
+        print('***********bg**********', response.xpath("//*[@class='bd']/div"))
+        for comment in response.xpath("//*[@class='bd']/div"):
             user_name = comment.xpath("//div[@class='tit']/a/text()").extract_first()
             comment_content = comment.xpath("//p[@class='cnt']/text()").extract_first()
             create_time = comment.xpath("//span[@class='l timeago']/text()").extract_first()
-            print('## user_name -----', user_name, ' ## comment -----', comment_content, '## create_time ------', create_time)
+            # print('## user_name -----', user_name, ' ## comment -----', comment_content, '## create_time ------', create_time)
+            print('============================', user_name)
 
             yield {
                 'userName': user_name,
