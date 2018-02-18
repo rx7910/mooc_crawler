@@ -5,8 +5,8 @@ import scrapy
 
 class IMoocSpider(scrapy.Spider):
     name = "imooc"
-    course_id = None
-    course_name = None
+    # course_id = None
+    # course_name = None
 
     def start_requests(self):
         urls = [
@@ -25,35 +25,40 @@ class IMoocSpider(scrapy.Spider):
 
             print('%%%%%%%%%%%%%%%%%%%', course_id)
 
-            self.course_id = course_id
-            self.course_name = course_card.xpath("//div[@class='course-card-content']/h3/text()").extract_first()
+            # self.course_id = course_id
+            # self.course_name = course_card.xpath("//div[@class='course-card-content']/h3/text()").extract_first()
 
-            if course_id is not None:
-                comment_url = 'https://www.imooc.com/comment/' + course_id
-                print('***************************************')
-                yield scrapy.Request(url=comment_url, callback=self.parse_comment_page)
+            comment_url = 'https://www.imooc.com/course/comment/id/' + course_id + '?page=1'
+            print('***************************************', comment_url)
+            yield scrapy.Request(url=comment_url, callback=self.parse_comment_page)
 
-        next_page = response.xpath("//div[@class='page']/a[contains(., '下一页')]/@href").extract_first()
-
+        # next_page = response.xpath("//div[@class='page']/a[contains(., '下一页')]/@href").extract_first()
         # if next_page is not None:
         #     next_page = response.urljoin(next_page)
         #     yield response.follow(next_page, callback=self.parse)
 
     def parse_comment_page(self, response):
+
         print('***********bg**********', response.xpath("//*[@class='bd']/div"))
+
+        course_id = response.xpath('//div[@class="course-infos"]/div[@class="w pr"]/div[@class="path"]/a[contains(@href, "learn")]/@href').extract_first()
+        print('course id ----->', course_id)
+        course_name = response.xpath('//div[@class="course_infos"]/div[@class="path"]/a[contains(@href, "learn")]/span/text()').extract_first()
+        reg = r"/learn/(.*)"
+        course_id = re.findall(reg, course_id)[0]
+
         for comment in response.xpath("//*[@class='bd']/div"):
             user_name = comment.xpath("//div[@class='tit']/a/text()").extract_first()
             comment_content = comment.xpath("//p[@class='cnt']/text()").extract_first()
             create_time = comment.xpath("//span[@class='l timeago']/text()").extract_first()
-            # print('## user_name -----', user_name, ' ## comment -----', comment_content, '## create_time ------', create_time)
             print('============================', user_name)
 
             yield {
                 'userName': user_name,
                 'commentContent': comment_content,
                 'createTime': create_time,
-                'courseId': self.course_id,
-                'courseName': self.course_name,
+                'courseId': course_id,
+                'courseName': course_name,
             }
 
 
