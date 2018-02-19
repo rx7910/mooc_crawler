@@ -6,7 +6,7 @@ from scrapy import Request
 
 
 class MoocChinaSpider(scrapy.Spider):
-    name = "test"
+    name = "mooc-china"
     url_pattern = 'https://www.icourse163.org/web/j/courseBean.getCoursePanelListByFrontCategory.rpc?csrfKey=ce9ad61e1cd140b98685c9a2bf1547ae'
     all_symbols = 62
 
@@ -43,11 +43,6 @@ class MoocChinaSpider(scrapy.Spider):
         resp = json.loads(response.body)
 
         result = resp['result']
-
-        print('code =========', resp['code'])
-        print('message =========', resp['message'])
-        print('result =========', resp['result'])
-        print('target =========', result['result'])
 
         for course in result['result']:
             # fetch commit here
