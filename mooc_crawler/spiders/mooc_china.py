@@ -16,6 +16,9 @@ class MoocChinaSpider(scrapy.Spider):
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
     }
 
+    course_name = None
+    course_id = None
+
     def start_requests(self):
         url = 'https://www.icourse163.org/web/j/courseBean.getCoursePanelListByFrontCategory.rpc?csrfKey=ce9ad61e1cd140b98685c9a2bf1547ae'
         data = {
@@ -50,6 +53,8 @@ class MoocChinaSpider(scrapy.Spider):
             id_num = course['id']
             course_id = school_short_cut + str(id_num)
             course_url = 'https://www.icourse163.org/course/' + course_id
+            self.course_name = course['name']
+            self.course_id = course['id']
 
             commit_form_data = {
                 'courseId': str(id_num),
@@ -70,6 +75,8 @@ class MoocChinaSpider(scrapy.Spider):
         commit_list = result['list']
 
         for commit in commit_list:
+            commit['courseName'] = self.course_name
+            commit['courseId'] = self.course_id
             yield commit
 
 

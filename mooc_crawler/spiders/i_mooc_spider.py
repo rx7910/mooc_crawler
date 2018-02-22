@@ -47,14 +47,16 @@ class IMoocSpider(scrapy.Spider):
             comment_content = comment.xpath('.//div[@class="bd"]/p[@class="cnt"]/text()').extract_first()
             create_time = comment.xpath(
                 './/div[@class="bd"]/div[@class="footer clearfix"]/span[@class="l timeago"]/text()').extract_first()
+            create_time = re.findall(r"时间：(.*)", create_time)[0]
 
-            yield {
-                'userName': user_name,
-                'commentContent': comment_content,
-                'createTime': create_time,
-                'courseId': course_id,
-                'courseName': course_name,
-            }
+            if user_name is not None and user_name != '' and comment_content is not None and comment_content != '':
+                yield {
+                    'userName': user_name,
+                    'commentContent': comment_content,
+                    'createTime': create_time,
+                    'courseId': course_id,
+                    'courseName': course_name,
+                }
 
         next_comment_page = response.xpath('//div[@class="page"]/a[contains(., "下一页")]/@href').extract_first()
         if next_comment_page is not None:
