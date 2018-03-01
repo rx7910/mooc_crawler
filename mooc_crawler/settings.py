@@ -21,6 +21,9 @@ NEWSPIDER_MODULE = 'mooc_crawler.spiders'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
+# the CSV delimiter
+CSV_DELIMITER = "::"
+
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
 
