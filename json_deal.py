@@ -36,6 +36,10 @@ del data_for_cfr2['createTime']
 
 data_for_cfr2.to_csv('./coursescore_for_cfr.csv', index=False, sep='\t')
 
+user_id_list = []
+print(data_for_cfr2.distinct('userId'))
+
+
 
 # new_data = json.dumps(data_for_recsys)
 #
