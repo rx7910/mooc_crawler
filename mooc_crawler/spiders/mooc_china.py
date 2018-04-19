@@ -8,7 +8,7 @@ from scrapy import Request
 class MoocChinaSpider(scrapy.Spider):
     name = "mooc-china"
     url_pattern = 'https://www.icourse163.org/web/j/courseBean.getCoursePanelListByFrontCategory.rpc?csrfKey=ce9ad61e1cd140b98685c9a2bf1547ae'
-    all_symbols = 62
+    all_symbols = 73
 
     commit_url_pattern = 'https://www.icourse163.org/web/j/mocCourseV2RpcBean.getCourseEvaluatePaginationByCourseIdOrTermId.rpc?csrfKey=ce9ad61e1cd140b98685c9a2bf1547ae'
 
@@ -63,9 +63,13 @@ class MoocChinaSpider(scrapy.Spider):
                 'orderBy': '3',
             }
 
-            form_request = scrapy.FormRequest(url=self.commit_url_pattern, headers=self.headers, formdata=commit_form_data, callback=self.parse_commit)
+            form_request = scrapy.FormRequest(
+                url=self.commit_url_pattern,
+                headers=self.headers,
+                formdata=commit_form_data,
+                callback=self.parse_commit
+            )
             yield form_request
-        # yield course
 
     def parse_commit(self, response):
         resp = json.loads(response.body)
